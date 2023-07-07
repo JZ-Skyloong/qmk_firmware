@@ -22,22 +22,3 @@
 #define RGB_MATRIX_KEYPRESSES  //Reacts to keypress
 #define RGB_DISABLE_WHEN_USB_SUSPENDED   //turn off effects when suspended
 #endif
-
-#ifdef IS31FL3743A
-/*
- * RGB matrix driver config (IS31FL3743A)
- *
- * This is a 7-bit address, that gets left-shifted and bit 0
- * set to 0 for write, 1 for read (as per I2C protocol)
- * The address will vary depending on your wiring:
- * 00 <-> GND
- * 01 <-> SCL
- * 10 <-> SDA
- * 11 <-> VCC
- * ADDR1 represents A1:A0 of the 7-bit address.
- * ADDR2 represents A3:A2 of the 7-bit address.
- * The result is: 0b010(ADDR2)(ADDR1)
- */
-#define __flash  PROGMEM
-#endif
-
