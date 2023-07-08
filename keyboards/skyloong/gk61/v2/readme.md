@@ -10,7 +10,7 @@
 The following is the QMK Firmware for the Destop 40% keylayout -  designed in Dongguan Jizhi Electronic Technology Co., Ltd
 * Keyboard Maintainer: [JZ-Skyloong](https://github.com/JZ-Skyloong)
 * Hardware Supported: DestopPCB for Skyloong keylayout 60%, STM32F103C8T6
-* Hardware Availability: http://www.skyloong.com.cn
+* Hardware Availability: http://www.skyloong.com.cn https://skyloong.vip
 
 Make example for this keyboard (after setting up your build environment):
 
