@@ -1,12 +1,12 @@
-# GK87 PTIR Keyboard
+# GK87 Optical Keyboard
 
-![GK87 PTIR ANSI](https://i.imgur.com/TYx22dhh.jpg)
-![GK87 PTIR ISO](https://i.imgur.com/RFngtv6h.jpg)
+![GK87 OPTICAL ANSI](https://i.imgur.com/TYx22dhh.jpg)
+![GK87 OPTICAL ISO](https://i.imgur.com/RFngtv6h.jpg)
 
 ## The PCB features:
 * QMK & VIA compatibility
 * RGB Matrix backlight
-* Use PTIR switches instead of mechanical switches to increase the service life and reliability of switches.
+* Use optical switches instead of mechanical switches to increase the service life and reliability of switches.
 
 
 The following is the QMK Firmware for the Destop 87% keylayout -  designed by Dongguan Jizhi Electronic Technology Co., Ltd
