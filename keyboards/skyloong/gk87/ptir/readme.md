@@ -1,6 +1,6 @@
 # GK87 Optical Keyboard
 
-![GK87 OPTICAL ANSI](https://i.imgur.com/TYx22dhh.jpg)
+![GK87 OPTICAL ANSI](https://i.imgur.com/m2TBgi4h.png)
 ![GK87 OPTICAL ISO](https://i.imgur.com/RFngtv6h.jpg)
 
 ## The PCB features:
