@@ -3,7 +3,8 @@
 //Matrix read cols set row
 //Matrix logic ADAPTS to PTIR
 
-#include "quantum.h"
+#include <string.h>
+#include "atomic_util.h"
 #include "debounce.h"
 
 #define ALL_KEY_COL_PULL A15
