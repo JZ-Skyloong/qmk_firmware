@@ -33,30 +33,30 @@ static inline void select_delay(uint16_t n) {
     };
 }
 
-static inline void setPinOutput_writeLow(pin_t pin) {
+static inline void gpio_set_pin_output_write_low(pin_t pin) {
     ATOMIC_BLOCK_FORCEON {
-        setPinOutput(pin);
-        writePinLow(pin);
+        gpio_set_pin_output(pin);
+        gpio_write_pin_low(pin);
     }
 }
 
-static inline void setPinOutput_writeHigh(pin_t pin) {
+static inline void gpio_set_pin_output_write_high(pin_t pin) {
     ATOMIC_BLOCK_FORCEON {
-        setPinOutput(pin);
-        writePinHigh(pin);
+        gpio_set_pin_output(pin);
+        gpio_write_pin_high(pin);
     }
 }
 
-static inline void setPinInput_atomic(pin_t pin) {
+static inline void gpio_set_pin_input_atomic(pin_t pin) {
     ATOMIC_BLOCK_FORCEON {
-        setPinInput(pin);
+        gpio_set_pin_input(pin);
     }
 }
 
 static bool select_row(uint8_t row) {
     pin_t pin = row_pins[row];
     if (pin != NO_PIN) {
-        setPinOutput_writeHigh(pin);
+        gpio_set_pin_output_write_high(pin);
         return true;
     }
     return false;
@@ -65,7 +65,7 @@ static bool select_row(uint8_t row) {
 static void unselect_row(uint8_t row) {
     pin_t pin = row_pins[row];
     if (pin != NO_PIN) {
-        setPinOutput_writeLow(pin);
+        gpio_set_pin_output_write_low(pin);
     }
 }
 
@@ -92,10 +92,10 @@ __attribute__((weak)) void matrix_read_cols_on_row(matrix_row_t current_matrix[]
     if (!select_row(current_row)) { // select row
         return;                     // skip NO_PIN row
     }
-    writePinHigh(HC165_CP_PIN);  //HC165 clock high
-    writePinLow(HC165_PL_PIN);//PL pull low
+    gpio_write_pin_high(HC165_CP_PIN);  //HC165 clock high
+    gpio_write_pin_low(HC165_PL_PIN);//PL pull low
     select_delay(ReadDelayTime);
-    writePinHigh(HC165_PL_PIN);  //PL pull high
+    gpio_write_pin_high(HC165_PL_PIN);  //PL pull high
 
 
     // For each col...
@@ -104,9 +104,9 @@ __attribute__((weak)) void matrix_read_cols_on_row(matrix_row_t current_matrix[]
 
         select_delay(ClockTime);  //The clocktime > 2
         uint8_t pin_state = readMatrixPin(HC165_MISO_PIN);
-        writePinLow(HC165_CP_PIN);//HC165 clock low
+        gpio_write_pin_low(HC165_CP_PIN);//HC165 clock low
         select_delay(ClockTime);
-        writePinHigh(HC165_CP_PIN);  //HC165 clock high
+        gpio_write_pin_high(HC165_CP_PIN);  //HC165 clock high
 
         // Populate the matrix row with the state of the col pin
         current_row_value |= pin_state ? 0 : row_shifter;
@@ -114,22 +114,22 @@ __attribute__((weak)) void matrix_read_cols_on_row(matrix_row_t current_matrix[]
     }
 
     unselect_row(current_row);
-    writePinLow(ALL_KEY_COL_PULL); //close cols
+    gpio_write_pin_low(ALL_KEY_COL_PULL); //close cols
     matrix_output_unselect_delay(current_row, current_row_value != 0); // wait for all Col signals to go HIGH
     current_matrix[current_row] = current_row_value;
 }
 
 void matrix_init_custom(void) {
     unselect_rows();
-    setPinOutput_writeHigh(ALL_KEY_COL_PULL);
+    gpio_set_pin_output_write_high(ALL_KEY_COL_PULL);
 
     //initialize HC165 Hold "do nothing"
-    setPinOutput_writeHigh(HC165_PL_PIN);  //HC165 PL High
-    setPinOutput_writeHigh(HC165_SELECT_PIN);  //HC165 CE High
-    setPinOutput_writeLow(HC165_CP_PIN);  //HC165 clock low
+    gpio_set_pin_output_write_high(HC165_PL_PIN);  //HC165 PL High
+    gpio_set_pin_output_write_high(HC165_SELECT_PIN);  //HC165 CE High
+    gpio_set_pin_output_write_low(HC165_CP_PIN);  //HC165 clock low
 
     // initialize key data input pin
-    setPinInput_atomic(HC165_MISO_PIN);
+    gpio_set_pin_input_atomic(HC165_MISO_PIN);
 
     // initialize matrix state: all keys off
     memset(matrix, 0, sizeof(matrix));
@@ -143,15 +143,15 @@ void matrix_init_custom(void) {
 bool matrix_scan_custom(matrix_row_t current_matrix[]) {
     bool matrix_has_changed = false;
 
-    writePinLow(HC165_SELECT_PIN);   //select HC165
-    writePinHigh(ALL_KEY_COL_PULL);  //open cols
+    gpio_write_pin_low(HC165_SELECT_PIN);   //select HC165
+    gpio_write_pin_high(ALL_KEY_COL_PULL);  //open cols
 
     matrix_row_t curr_matrix[MATRIX_ROWS] = {0};
 
     // Set row, read cols
     for (uint8_t current_row = 0; current_row < MATRIX_ROWS; current_row++) {
         matrix_read_cols_on_row(curr_matrix, current_row);
-        writePinHigh(ALL_KEY_COL_PULL);  //open cols
+        gpio_write_pin_high(ALL_KEY_COL_PULL);  //open cols
     }
 
     matrix_has_changed = memcmp(current_matrix, curr_matrix, sizeof(curr_matrix)) != 0;

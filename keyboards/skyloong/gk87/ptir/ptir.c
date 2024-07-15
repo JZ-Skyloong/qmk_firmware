@@ -177,9 +177,9 @@ bool rgb_matrix_indicators_advanced_kb(uint8_t led_min, uint8_t led_max) {
 
 void suspend_power_down_kb() {
 #    ifdef RGB_MATRIX_ENABLE
-    writePinLow(SDB);
+    gpio_write_pin_low(SDB);
 #    endif
-    writePinLow(MAC_PIN);
+    gpio_write_pin_low(MAC_PIN);
     suspend_power_down_user();
 }
 
@@ -191,7 +191,7 @@ void suspend_wakeup_init_kb() {
 }
 
 bool shutdown_kb(bool jump_to_bootloader) {
-    writePinLow(SDB);
+     gpio_write_pin_low(SDB);
     return shutdown_user(jump_to_bootloader);
 }
 
@@ -259,10 +259,10 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
 layer_state_t default_layer_state_set_kb(layer_state_t state) {
     switch (get_highest_layer(state)) {
     case 0:
-        writePinLow(MAC_PIN);
+        gpio_write_pin_low(MAC_PIN);
         break;
     case 1:
-        writePinHigh(MAC_PIN);
+        gpio_write_pin_high(MAC_PIN);
         break;
     }
   return state;
@@ -276,6 +276,6 @@ void board_init(void) {
     setPinOutput(SDB);
     writePinHigh(SDB);
 #   endif
-    setPinOutput(MAC_PIN);
-    writePinHigh(MAC_PIN);
+    gpio_set_pin_output(MAC_PIN);
+    gpio_write_pin_high(MAC_PIN);
 }
